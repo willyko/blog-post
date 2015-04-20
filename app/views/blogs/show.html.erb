@@ -1,0 +1,21 @@
+<h1> <%= @blog_post.title %></h1>
+<br>
+<p><%= @blog_post.body %></p>
+<%= link_to "Edit", edit_blog_post_path %>
+<%= link_to "Delete", blog_post_path, method: :delete %> 
+<h2> Comment </h2>
+
+<div class="comment">
+  <% @blog_post.comments.each do |comment| %>
+    <%= comment.body %>
+    <%= comment.user.user_name %>
+    <br>
+  <% end %>
+</div>
+
+<div class="comment-form">
+  <%= simple_form_for @comment, url: "#{@blog_post.id}/comments", html: {class: "form-horizontal"} do |f| %>
+    <%= f.input :body %>
+    <%= f.submit class: "btn btn-primary" %>
+  <% end %>
+</div>

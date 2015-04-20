@@ -1,0 +1,15 @@
+<h1> Welcome to MY BLOG </h1>
+<table class=".table">
+<% @blog_posts.each do | blog_post | %>
+  <tr>
+    <h2>
+      <%=blog_post.title%>
+    </h2>
+    <%= blog_post.created_at %>
+    <br>
+    <%= blog_post.body %>
+    <br>
+    <%= link_to "Comments #{blog_post.comments.count}", blog_post%>
+  </tr>
+<% end %>
+</table>
