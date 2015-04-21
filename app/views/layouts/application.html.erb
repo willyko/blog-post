@@ -8,15 +8,23 @@
 </head>
 <body>
   <div class="navbar navbar-default">
-  <%= link_to "Home", root_path %>
-  <%= link_to "New Blog", new_blog_post_path %>
-  <% if user_signed_in? %>
-    Welcome <%= current_user.user_name %>
-    <%= link_to "Log out", destroy_user_session_path, method: :delete %>
-  <% else %>
-    <%= link_to "Log in", new_user_session_path %>
-    <%= link_to "Register", new_user_registration_path %>
-  <% end %>
+    <div class="col-md-4">
+      <%= link_to "Home", root_path %>
+    </div>
+    <div class="col-md-4">
+      <%= link_to "New Blog Entry", new_blog_post_path %>
+    </div>
+    <% if user_signed_in? %>
+      <div class="col-md-4">
+        Welcome  <%= current_user.user_name %> |
+        <%= link_to "Log out", destroy_user_session_path, method: :delete %>
+      </div>
+    <% else %>
+      <div class="col-md-4">
+        <%= link_to "Log in", new_user_session_path %>
+        <%= link_to "Register", new_user_registration_path %>
+      </div>
+    <% end %>
   </div>
 <%= yield %>
 

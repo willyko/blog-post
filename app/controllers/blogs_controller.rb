@@ -10,8 +10,14 @@ class BlogsController < ApplicationController
   end
   def create
     @blog_post = current_user.blog_posts.new(blog_post_params)
+    body_to_tags
     if @blog_post.save
       flash[:notice] = "Blog posted"
+      #@tag_array.each do | t |
+      #  tag = Tag.new name: t
+      #  tag.blog_posts = @blog_post
+      #  tag.save
+      #end
       redirect_to blog_post_path(@blog_post)
     else
       render :new
@@ -45,4 +51,11 @@ class BlogsController < ApplicationController
     params.require(:blog_post).permit(:title, :body)
   end
 
+  def body_to_tags
+    @blog_post.body.split.each do | str |
+      if str.chr == '#' && str.length > 1
+        @blog_post.tags << Tag.new(name: str.downcase[1..-1])
+      end
+    end
+  end
 end
