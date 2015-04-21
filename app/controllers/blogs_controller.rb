@@ -3,7 +3,12 @@ class BlogsController < ApplicationController
   before_action :find_blog_post, only:[:show, :edit, :update, :destroy]
 
   def index
-    @blog_posts = BlogPost.all.order("created_at DESC")
+    if params[:tag_filter]
+      @blog_posts = Tag.find_by(name: params[:tag_filter]).blog_posts
+    else
+      @blog_posts = BlogPost.all.order("created_at DESC")
+    end
+    @tags = Tag.all
   end
   def new
     @blog_post = BlogPost.new
@@ -54,7 +59,12 @@ class BlogsController < ApplicationController
   def body_to_tags
     @blog_post.body.split.each do | str |
       if str.chr == '#' && str.length > 1
-        @blog_post.tags << Tag.new(name: str.downcase[1..-1])
+        tag_name = str.downcase[1..-1]
+          if Tag.find_by(name: tag_name)
+            @blog_post.tags << Tag.find_by(name: tag_name)
+          else
+            @blog_post.tags << Tag.new(name: tag_name)
+          end
       end
     end
   end
