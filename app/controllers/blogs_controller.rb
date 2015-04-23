@@ -18,11 +18,6 @@ class BlogsController < ApplicationController
     body_to_tags
     if @blog_post.save
       flash[:notice] = "Blog posted"
-      #@tag_array.each do | t |
-      #  tag = Tag.new name: t
-      #  tag.blog_posts = @blog_post
-      #  tag.save
-      #end
       redirect_to blog_post_path(@blog_post)
     else
       render :new
@@ -39,7 +34,8 @@ class BlogsController < ApplicationController
   def edit
   end
   def update
-    if @blog_post.update(blog_post_params)
+    body_to_tags
+    if @blog_post.update(blog_post_params.merge!(:tags => @blog_post.tags))
       redirect_to @blog_post, notice: "Blog updated"
     else
       flash[:alert] = "Please correct error below"
@@ -57,6 +53,7 @@ class BlogsController < ApplicationController
   end
 
   def body_to_tags
+    @blog_post.tags = []
     @blog_post.body.split.each do | str |
       if str.chr == '#' && str.length > 1
         tag_name = str.downcase[1..-1]

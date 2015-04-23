@@ -13,7 +13,6 @@ class CommentsController < ApplicationController
       flash[:notice] = "Failed to comment"
       redirect_to @blog_post
     end
-
   end
 
   def destroy
